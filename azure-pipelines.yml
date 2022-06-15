@@ -1,19 +1,8 @@
-
-jobs:
-- job: Github
-  timeoutInMinutes: 180
-  steps:
-  - powershell: |
-      "Build reason: $(Build.Reason)"
-      "Build repo provider: $(Build.Repository.Provider)"
-      "Build repo name: $(Build.Repository.Name)"
-      "Build source version: $(Build.SourceVersion)"
-      "Build id: $(Build.BuildId)"
-      "Build source branch: $(Build.SourceBranch)"
-    condition: always()
-    displayName: 'Build information'
-
-  - checkout: self
-    path: Github
-  - checkout: devops
-    path: Azure
+resources:
+  repositories:
+    - repository: devops
+      type: git
+      name: QualisysBuildPipeline
+      
+extends:
+  template: template-github.yml@devops
