@@ -1,16 +1,19 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
 
-trigger:
-- main
+jobs:
+- job: Github
+  timeoutInMinutes: 180
+  steps:
+  - powershell: |
+      "Build reason: $(Build.Reason)"
+      "Build repo provider: $(Build.Repository.Provider)"
+      "Build repo name: $(Build.Repository.Name)"
+      "Build source version: $(Build.SourceVersion)"
+      "Build id: $(Build.BuildId)"
+      "Build source branch: $(Build.SourceBranch)"
+    condition: always()
+    displayName: 'Build information'
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - checkout: self
+    path: Github
+  - checkout: devops
+    path: Azure
